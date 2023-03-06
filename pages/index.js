@@ -1,8 +1,30 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import {useState} from "react";
+import {auth} from "../firebase/firebase";
+import { Button, Container, Dialog, Typography } from '@mui/material';
+import { EmailAuthProvider, GoogleAuthProvider } from 'firebase/auth';
+import styles from "../styles/landing.module.scss";
+import StyledFirebaseAuth from "../components/StyledFirebaseAuth";
 
+const REDIRECT_PAGE = "/dashboard";
+
+
+//Firebase UI config
+const uiConfig = {
+  signInSuccessUrl : REDIRECT_PAGE,
+
+  signInOptions: [
+    EmailAuthProvider.PROVIDER_ID,
+    GoogleAuthProvider.PROVIDER_ID
+  ]
+
+}
 
 
 export default function Home() {
+
+  //set state for the login text change
+  const [login, setLogin] = useState(false);
   return (
     <>
       <Head>
@@ -11,8 +33,24 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main>
-        <h1> Hello World.</h1>
-        <p> Welcome to my new Home.</p>
+
+      <Container className={styles.container}>
+        <Typography variant='h1'> Welcome to Expense Tracker</Typography>
+        <Typography variant='h3'> Add,View,Edit and Delete expenses</Typography>
+
+        {/* add button for login */}
+        <div className={styles.buttons}>
+          <Button variant='contained' color='secondary' onClick = {() => setLogin(true)}>
+            Login/Register
+          </Button>
+        </div>
+        <Dialog open={login} onClose={ () => setLogin(false)}>
+          <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth}></StyledFirebaseAuth>
+        </Dialog>
+        
+
+      </Container>
+
 
       </main>
     </>
