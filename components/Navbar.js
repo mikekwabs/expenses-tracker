@@ -5,7 +5,7 @@ import styles from "../styles/navbar.module.scss"
 
 export default function Navbar(){
     //use the context created to obtain the current user.
-    const {authUser} = useAuth();
+    const { authUser, signOut } = useAuth();
     return(
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static" className={styles.appbar}>
@@ -13,10 +13,11 @@ export default function Navbar(){
                     <Container className={styles.container}>
                         <Typography variant="h3" sx={{flexGrow: 1, alignSelf: "center"}}> EXPENSES</Typography>
                             <Stack direction="row" spacing={2} sx={{alignItems: "center"}}>
-                                <Typography variant="h6" sx={{flexGrow: 1}}>{authUser?.email}</Typography>
+                                <Typography variant="h6" sx={{flexGrow: 1}}> {authUser?.email} </Typography>
+                                <Button variant="outlined"color="error" onClick={signOut}> Logout</Button>
                             </Stack>
                     </Container>
-                        <Button variant="text"color="secondary"> Logout</Button>
+                        
                 </Toolbar>
             </AppBar>
         </Box>

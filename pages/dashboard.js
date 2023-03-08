@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Navbar from "@/components/Navbar";
 import {useEffect, useState} from"react";
 import { useAuth } from "@/firebase/auth";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Container, Snackbar, Alert, Typography,Stack, IconButton, Dialog, DialogContent, DialogActions, Button, snackbarClasses } from "@mui/material";
+import { Container, Snackbar, Alert, Typography,Stack, IconButton, Dialog, DialogContent, DialogActions, Button, snackbarClasses, CircularProgress } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import ExpenseDialog from "@/components/ExpenseDialog";
 import styles from "@/styles/dashboard.module.scss"
@@ -42,7 +43,7 @@ export default function Dashboard(){
 
     const {authUser, isLoading} = useAuth();
     const router = useRouter();
-    const [action, setAction] = useState();
+    const [action, setAction] = useState(RECEIPT_ENUM.none);
 
 
     //Different states for loading, setting,deleting and updating receipts
@@ -55,6 +56,21 @@ export default function Dashboard(){
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
     const [showErrorSnackbar, setShowErrorSnackbar] = useState(false)
+
+    //Set appropriate snackbar message
+    const onResult = async (receiptEnum, isSuccess) =>{
+        setSnackbarMessage(isSuccess ? SUCCESS_MAP[receiptEnum] : ERROR_MAP[receiptEnum]);
+        isSuccess ? setShowSuccessSnackbar(true) : setShowErrorSnackbar(true);
+        setAction(RECEIPT_ENUM.none);
+    }
+
+    //Listen to changes for loading and authUser
+    useEffect( () => {
+        //Send user back to landing page,when we don't have to load or there isn't any user
+        if (!authUser && !isLoading){
+            router.push("/")
+        }
+    }, [authUser, isLoading])
 
     
 
@@ -72,7 +88,10 @@ export default function Dashboard(){
 
     }
 
-    function onClickDelete(){
+    function onClickDelete(id, imageBucket){
+        setAction(RECEIPT_ENUM.delete);
+        setDeleteReceiptId(id);
+        setDeleteReceiptImageBucket(imageBucket);
 
     }
     
@@ -85,34 +104,35 @@ export default function Dashboard(){
 
 
 
-    return(
+    return( (!authUser) ? 
+    <CircularProgress color="inherit" sx={{marginLeft: "50%", marginTop: "25%"}}/> :
 
         <div>
             <Head>
-                <title>Expense Tracker</title>
+                <title>Dashboard</title>
             </Head>
             {/* render navbar component */}
             <Navbar/>
 
             <Container>
                 {/* onSuccess toast */}
-                <Snackbar open={showSuccessSnackbar} autoHideDuration={2000} onClose={() => setShowSuccessSnackbar(false)} anchorOrigin={{horizontal: "center", vertical:"top"}}>
+                <Snackbar open={showSuccessSnackbar} autoHideDuration={2000} onClose={() => setShowSuccessSnackbar(false)} anchorOrigin={{horizontal: "right", vertical:"top"}}>
                     <Alert onClose={() => {setShowSuccessSnackbar(false)}} severity="success">{snackbarMessage}</Alert>
                 </Snackbar>
                 
                 {/* onError toast */}
-                <Snackbar open={setShowErrorSnackbar} autoHideDuration={2000} onClose={ () => setShowSuccessSnackbar(false)} anchorOrigin={{horizontal: "center", vertical:"top"}}>
+                <Snackbar open={showErrorSnackbar} autoHideDuration={2000} onClose={ () => setShowErrorSnackbar(false)} anchorOrigin={{horizontal: "right", vertical:"top"}}>
                     <Alert onClose={() => setShowErrorSnackbar(false)} severity="error"> {snackbarMessage}</Alert>
                 </Snackbar>
                 
-                {/* Simple stack after navbar */}
+                {/* Simple stack to display "Expenses" and plus icon */}
                 <Stack direction="row" sx={{paddingTop: "1.5em"}}>
                     <Typography variant="h4" sx={{lineHeight: 2, paddingRight: "0.5em"}}> EXPENSES</Typography>
                     <IconButton aria-label="edit" color="secondary" onClick={onClickAdd} className={styles.addButton}> <AddIcon/> </IconButton>
                 </Stack>
             </Container>
 
-            
+            {/* A dialog to add expense */}
             <ExpenseDialog 
             
             edit={updateReceipt} 

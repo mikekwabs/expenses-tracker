@@ -1,4 +1,3 @@
-
 ## Expense Tracker 💸
 
 Tracking your spending is often the first step in getting your finances in order.By understanding what you spend money on and how much you spend, you can see where exactly your cash is going and areas where you can cut back. Therefore in this project, we build a minimalist expense tracker. 🎯
