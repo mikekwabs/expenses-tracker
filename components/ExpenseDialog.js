@@ -8,10 +8,12 @@ import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import { uploadImage } from "@/firebase/storage";
 import { useAuth } from "@/firebase/auth";
 import { RECEIPT_ENUM } from "@/pages/dashboard";
+import { addReceipt } from "@/firebase/firestore";
 
 
 
 const DEFAULT_FILE_NAME = "No file selected";
+
 
 //basic featured of the dialog  box
 const DEFAULT_FORM_STATE = {
@@ -23,6 +25,7 @@ const DEFAULT_FORM_STATE = {
     items: "",
     amount: "",
 }
+
 
 //A dialog to enter receipt information
 //props:
@@ -77,7 +80,8 @@ export default function ExpenseDialog(props){
         setIsSubmitting(true);
 
         try{
-            await uploadImage(formFields.file,authUser.uid);
+            const bucket = await uploadImage(formFields.file,authUser.uid);
+            await addReceipt(authUser.uid, formFields.date, formFields.locationName, formFields.address, formFields.items, formFields.amount, bucket)
             props.onSuccess(RECEIPT_ENUM.add);
             
         } 

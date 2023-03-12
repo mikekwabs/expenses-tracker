@@ -3,7 +3,6 @@
 
 
 //Creating a context
-
 import { createContext, useContext, useEffect, useState } from "react";
 import {auth} from "./firebase"
 import { onAuthStateChanged, signOut as authSignOut } from "firebase/auth";

@@ -4,10 +4,12 @@ import {useEffect, useState} from"react";
 import { useAuth } from "@/firebase/auth";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Container, Snackbar, Alert, Typography,Stack, IconButton, Dialog, DialogContent, DialogActions, Button, snackbarClasses, CircularProgress } from "@mui/material";
+import { Container, Snackbar, Alert, Typography,Stack, IconButton, Dialog, DialogContent, DialogActions, Button, snackbarClasses, CircularProgress, Divider } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import ExpenseDialog from "@/components/ExpenseDialog";
 import styles from "@/styles/dashboard.module.scss"
+import { getReceipts } from "@/firebase/firestore";
+import ReceiptCard from "@/components/ReceiptCard";
 
 //define message information onEvents
 const ADD_SUCCESS = "Receipt was successfully added!";
@@ -51,6 +53,7 @@ export default function Dashboard(){
     const [deleteReceiptId, setDeleteReceiptId] = useState("");
     const [deleteReceiptImageBucket, setDeleteReceiptImageBucket] = useState("");
     const [updateReceipt, setUpdateReceipt] = useState({});
+    const [receipts, setReceipts] = useState([]);
 
     //snackbar states
     const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -72,6 +75,19 @@ export default function Dashboard(){
         }
     }, [authUser, isLoading])
 
+
+    getReceipts(authUser.uid).then(
+      console.log();
+    )
+
+
+    //Obtain Receipts when user is logged in.
+    // useEffect( ()=>{
+    //   if (authUser){
+    //     setReceipts(getReceipts(authUser.uid));
+    //   }
+    //   console.log(receipts)
+    // },[authUser])
     
 
     //All onClick events: set the specific action and receipt event
@@ -130,7 +146,23 @@ export default function Dashboard(){
                     <Typography variant="h4" sx={{lineHeight: 2, paddingRight: "0.5em"}}> EXPENSES</Typography>
                     <IconButton aria-label="edit" color="secondary" onClick={onClickAdd} className={styles.addButton}> <AddIcon/> </IconButton>
                 </Stack>
+
+                {/* map over the receipts and display */}
+                {receipts.map( (receipt) => {
+                  <div>
+
+                  <Divider light/>
+
+                  <ReceiptCard receipt={receipt}
+                  onEdit={ () => onUpdate(receipt)}
+                  onDelete={ () => onClickDelete(receipt.id, receipt.imageBucket)}/>
+                  </div>
+                })}
             </Container>
+
+            
+
+            
 
             {/* A dialog to add expense */}
             <ExpenseDialog 

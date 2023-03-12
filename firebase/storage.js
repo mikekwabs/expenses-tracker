@@ -1,11 +1,10 @@
 //Cloud Storage for Firebase is built for app developers who need to store and serve user-generated content, such as photos or videos.
 
 import { format } from "date-fns";
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL as getStorageDownloadURL } from "firebase/storage";
 import { storage } from "./firebase";
 
 //Create a bucket URL to store files(receipt images)
-
 const BUCKET_URL = "gs://expenses-monitor-a5bef.appspot.com";
 
 
@@ -20,6 +19,11 @@ export async function uploadImage(image, uid){
     await uploadBytes(storageRef, image);
 
     return bucketData;
-    
 
+}
+
+
+//obtain a download url
+export async function getDownloadURL(bucket){
+    return await getStorageDownloadURL(ref(storage, bucket));
 }

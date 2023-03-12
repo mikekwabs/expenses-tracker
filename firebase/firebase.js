@@ -1,5 +1,3 @@
-// Initialize firebase configuration, in order to use the services.
-
 // Import the functions/services you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import {getAuth} from "firebase/auth";
