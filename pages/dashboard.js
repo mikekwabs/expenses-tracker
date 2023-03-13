@@ -8,8 +8,9 @@ import { Container, Snackbar, Alert, Typography,Stack, IconButton, Dialog, Dialo
 import AddIcon from '@mui/icons-material/Add';
 import ExpenseDialog from "@/components/ExpenseDialog";
 import styles from "@/styles/dashboard.module.scss"
-import { getReceipts } from "@/firebase/firestore";
+import { deleteReceipt, getReceipts } from "@/firebase/firestore";
 import ReceiptCard from "@/components/ReceiptCard";
+import { deleteImage } from "@/firebase/storage";
 
 //define message information onEvents
 const ADD_SUCCESS = "Receipt was successfully added!";
@@ -76,19 +77,21 @@ export default function Dashboard(){
     }, [authUser, isLoading])
 
 
-    getReceipts(authUser.uid).then(
-      console.log();
-    )
+
+    // Obtain Receipts when user is logged in.
+    useEffect( () => {
+        getData();
+    }, [authUser])
+ 
+    //for some reason the function to retrieve the receipt must be declared separetely.
+      async function getData(){
+        if (authUser){
+            const unsubscribe = await getReceipts(authUser.uid, setReceipts, setIsLoadingReceipts);
+            return () => unsubscribe();
+        }
+      }
 
 
-    //Obtain Receipts when user is logged in.
-    // useEffect( ()=>{
-    //   if (authUser){
-    //     setReceipts(getReceipts(authUser.uid));
-    //   }
-    //   console.log(receipts)
-    // },[authUser])
-    
 
     //All onClick events: set the specific action and receipt event
     //on clicking to add expense
@@ -118,7 +121,23 @@ export default function Dashboard(){
         
     }
 
+    //hanlde deleting the receiptCard
+    async function onDelete(){
+        let isDone = true;
 
+        try{
+            await deleteReceipt(deleteReceiptId);
+            await deleteImage(deleteReceiptImageBucket)
+
+        }
+        catch(error){
+            isDone = false;
+        }
+
+        resetDelete();
+        onResult(RECEIPT_ENUM.delete, isDone)
+
+    }
 
     return( (!authUser) ? 
     <CircularProgress color="inherit" sx={{marginLeft: "50%", marginTop: "25%"}}/> :
@@ -148,21 +167,19 @@ export default function Dashboard(){
                 </Stack>
 
                 {/* map over the receipts and display */}
-                {receipts.map( (receipt) => {
-                  <div>
+                
+                { receipts.map((receipt) => (
+            <div key={receipt.id}>
+                <Divider light />
 
-                  <Divider light/>
-
-                  <ReceiptCard receipt={receipt}
-                  onEdit={ () => onUpdate(receipt)}
-                  onDelete={ () => onClickDelete(receipt.id, receipt.imageBucket)}/>
-                  </div>
-                })}
+                <ReceiptCard 
+                receipt={receipt}
+                onEdit={() => onUpdate(receipt)}
+                onDelete={() => onClickDelete(receipt.id, receipt.imageBucket)} />
+          </div>)
+        )}
+                
             </Container>
-
-            
-
-            
 
             {/* A dialog to add expense */}
             <ExpenseDialog 
@@ -178,11 +195,11 @@ export default function Dashboard(){
             <Dialog open={action === RECEIPT_ENUM.delete} onClose={resetDelete}>
                     <Typography variant="h4" className={styles.title}> DELETE EXPENSE</Typography>
                     <DialogContent>
-                        <Alert>This will permanently delete your receipt!</Alert>
+                        <Alert severity="error">This will permanently delete your receipt!</Alert>
                     </DialogContent>
                     <DialogActions sx={{padding:"0 24px 24px"}}>
                         <Button color="secondary" variant="outlined" onClick={resetDelete}> Cancel</Button>
-                        <Button color="secondary" variant="contained" autofocus>  Delete</Button>
+                        <Button variant="contained" color="error" autofocus  onClick={onDelete}>  Delete</Button>
                     </DialogActions>
             </Dialog>
         </div>

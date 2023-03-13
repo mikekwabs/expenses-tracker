@@ -40,7 +40,9 @@ export default function Home() {
 
 
 
-  return (
+  return ((isLoading || (!isLoading && !!authUser)) ? 
+  <CircularProgress color="inherit" sx={{ marginLeft: '50%', marginTop: '25%' }}/>
+  :
     <div>
       <Head>
         <title>Expense Tracker</title>

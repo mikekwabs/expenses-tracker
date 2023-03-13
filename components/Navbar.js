@@ -11,10 +11,10 @@ export default function Navbar(){
             <AppBar position="static" className={styles.appbar}>
                 <Toolbar className={styles.toolbar}>
                     <Container className={styles.container}>
-                        <Typography variant="h3" sx={{flexGrow: 1, alignSelf: "center"}}> EXPENSES</Typography>
+                        <Typography variant="h3" sx={{flexGrow: 1, alignSelf: "center"}}> EXPENSE TRACKER</Typography>
                             <Stack direction="row" spacing={2} sx={{alignItems: "center"}}>
                                 <Typography variant="h6" sx={{flexGrow: 1}}> {authUser?.email} </Typography>
-                                <Button variant="outlined"color="error" onClick={signOut}> Logout</Button>
+                                <Button variant="text"color="error" onClick={signOut}> Logout</Button>
                             </Stack>
                     </Container>
                         

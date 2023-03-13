@@ -9,6 +9,7 @@ import styles from "@/styles/receiptCard.module.scss";
 //A function to display the receipt together with its information.
 export default function ReceiptCard(props){
     const receipt = props.receipt;
+    console.log(receipt);
 
     return(
         <div>
@@ -18,10 +19,10 @@ export default function ReceiptCard(props){
                     <Stack direction="row" className={styles.contentRow}>
                         <Stack direction="column" sx={{ flexGrow: 1 }}>
                             <Typography variant="h3">
-                                {format(receipt.date, 'MM/dd/yy')}
+                                {format(receipt.date, 'MM/dd/yyyy')}
                             </Typography> 
                             <Typography variant="h4">
-                                ${receipt.amount}
+                                ₵{receipt.amount}
                             </Typography>
                         </Stack>
                         <Stack direction="column" sx={{ flexGrow: 1 }}>

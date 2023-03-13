@@ -5,10 +5,10 @@ import { Dialog, DialogContent, Typography, Stack, Avatar, Button, TextField, Di
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
-import { uploadImage } from "@/firebase/storage";
+import { replaceImage, uploadImage } from "@/firebase/storage";
 import { useAuth } from "@/firebase/auth";
 import { RECEIPT_ENUM } from "@/pages/dashboard";
-import { addReceipt } from "@/firebase/firestore";
+import { addReceipt, updateReceipt } from "@/firebase/firestore";
 
 
 
@@ -80,19 +80,34 @@ export default function ExpenseDialog(props){
         setIsSubmitting(true);
 
         try{
-            const bucket = await uploadImage(formFields.file,authUser.uid);
-            await addReceipt(authUser.uid, formFields.date, formFields.locationName, formFields.address, formFields.items, formFields.amount, bucket)
-            props.onSuccess(RECEIPT_ENUM.add);
+
+            //check if dialog was opened for editing
+            if (isEdit){
+                //check if image was changed: if so, filename will not be null
+                if (formFields.fileName){
+                    //store in cloud storage.
+                    await replaceImage(formFields.file, formFields.imageBucket);
+                }
+                await updateReceipt(formFields.id,authUser.uid, formFields.date, formFields.locationName, formFields.address, formFields.items, formFields.amount, formFields.imageBucket)
+            }
+            else{
+                //if not for editing, we'll still upload image to cloud storage.
+                const bucket = await uploadImage(formFields.file,authUser.uid);
+
+                await addReceipt(authUser.uid, formFields.date, formFields.locationName, formFields.address, formFields.items, formFields.amount, bucket)
+
+            }
+            
+            props.onSuccess( isEdit ? RECEIPT_ENUM.edit : RECEIPTS_ENUM.add);
             
         } 
         catch(error){
-            props.onError(RECEIPT_ENUM.add)
+            props.onError(isEdit ? RECEIPT_ENUM.edit : RECEIPTS_ENUM.add);
         }
 
         closeDialog();
 
     }
-
 
 
 
