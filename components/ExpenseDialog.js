@@ -98,11 +98,11 @@ export default function ExpenseDialog(props){
 
             }
             
-            props.onSuccess( isEdit ? RECEIPT_ENUM.edit : RECEIPTS_ENUM.add);
+            props.onSuccess( isEdit ? RECEIPT_ENUM.edit : RECEIPT_ENUM.add);
             
         } 
         catch(error){
-            props.onError(isEdit ? RECEIPT_ENUM.edit : RECEIPTS_ENUM.add);
+            props.onError(isEdit ? RECEIPT_ENUM.edit : RECEIPT_ENUM.add);
         }
 
         closeDialog();

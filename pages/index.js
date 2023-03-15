@@ -43,16 +43,17 @@ export default function Home() {
   return ((isLoading || (!isLoading && !!authUser)) ? 
   <CircularProgress color="inherit" sx={{ marginLeft: '50%', marginTop: '25%' }}/>
   :
-    <div>
+    <div >
       <Head>
         <title>Expense Tracker</title>
         <meta name="description" content="An expenses tracker" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link name="favicon" href='/favicon.ico'/>
       </Head>
       <main>
 
       <Container className={styles.container}>
-        <Typography variant='h1'> Welcome to Expense Tracker</Typography>
+        <Typography variant='h1'>Track Daily Expenses</Typography>
         <Typography variant='h3'> Add,View,Edit and Delete expenses</Typography>
 
         {/* add button for login */}

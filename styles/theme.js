@@ -3,10 +3,11 @@
 import { createTheme } from "@mui/material/styles";
 import {primaryColor, secondaryColor, tertiaryColor, successColor, errorColor, fontColor,fontTitle, fontDefault} from "./_variables.module.scss"
 
-
-
+//create a custom theme and apply dark mode
 export const theme = createTheme({
     palette: {
+        mode: "dark",
+
         primary: {
             main: primaryColor,
         },
@@ -22,6 +23,7 @@ export const theme = createTheme({
         error: {
             main: errorColor,
         },
+        
     },
     components: {
         MuiButton:{

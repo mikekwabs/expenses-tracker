@@ -7,13 +7,7 @@ import { getStorage} from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBzTDvIFXvk4mrH1KNb6qjkgx86z3dw27Q",
-  authDomain: "expenses-monitor-a5bef.firebaseapp.com",
-  projectId: "expenses-monitor-a5bef",
-  storageBucket: "expenses-monitor-a5bef.appspot.com",
-  messagingSenderId: "665863736227",
-  appId: "1:665863736227:web:573d9f9cedd068a37ca816",
-  measurementId: "G-Z2GVGYMDB2"
+//put your config here.
 };
 
 // Initialize firebase functions and export globally.

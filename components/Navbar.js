@@ -13,7 +13,7 @@ export default function Navbar(){
                     <Container className={styles.container}>
                         <Typography variant="h3" sx={{flexGrow: 1, alignSelf: "center"}}> EXPENSE TRACKER</Typography>
                             <Stack direction="row" spacing={2} sx={{alignItems: "center"}}>
-                                <Typography variant="h6" sx={{flexGrow: 1}}> {authUser?.email} </Typography>
+                                <Typography variant="h3" sx={{flexGrow: 1}}> {authUser?.email} </Typography>
                                 <Button variant="text"color="error" onClick={signOut}> Logout</Button>
                             </Stack>
                     </Container>
