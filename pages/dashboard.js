@@ -167,7 +167,7 @@ export default function Dashboard(){
                 </Stack>
 
                 {/* map over the receipts and display */}
-                
+
                 { receipts.map((receipt) => (
             <div key={receipt.id}>
                 <Divider light />
@@ -178,7 +178,7 @@ export default function Dashboard(){
                 onDelete={() => onClickDelete(receipt.id, receipt.imageBucket)} />
           </div>)
         )}
-                
+
             </Container>
 
             {/* A dialog to add expense */}

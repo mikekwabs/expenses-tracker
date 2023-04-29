@@ -5,7 +5,7 @@ import { ref, uploadBytes, getDownloadURL as getStorageDownloadURL, deleteObject
 import { storage } from "./firebase";
 
 //Create a bucket URL to store files(receipt images)
-const BUCKET_URL = "";
+const BUCKET_URL = "gs://expense-trac-60ff5.appspot.com";
 
 
 export async function uploadImage(image, uid){

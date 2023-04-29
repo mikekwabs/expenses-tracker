@@ -7,3 +7,12 @@ This project is a good practice for CRUD (Create,Read, Update and Delete) operat
 - [NextJS](https://nextjs.org/)
 - [MaterialUI](https://mui.com/)
 - [Firebase](firebase.google.com)
+
+## Key Notes:
+
+- Create a Firebase Project, add an app.
+- Enable the services used in the application. (Firestore, Storage and Authentication).
+- Copy Bucket URL from Storage Dashboard and paste in firestore.js file in the firebase folder.
+- Done
+
+### Happing Hacking!!!!!

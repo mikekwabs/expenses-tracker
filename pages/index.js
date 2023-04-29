@@ -35,7 +35,7 @@ export default function Home() {
     if (!isLoading && authUser){
       router.push("/dashboard")
     }
-  },[])
+  })
 
 
 

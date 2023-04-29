@@ -9,7 +9,6 @@ import styles from "@/styles/receiptCard.module.scss";
 //A function to display the receipt together with its information.
 export default function ReceiptCard(props){
     const receipt = props.receipt;
-    console.log(receipt);
 
     return(
         <div>
