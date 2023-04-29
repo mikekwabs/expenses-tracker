@@ -8,12 +8,12 @@ import { getStorage} from "firebase/storage";
 // Your web app's Firebase configuration
 const firebaseConfig = {
     //put your config here.
-    apiKey: "AIzaSyCWaq44lJTuVkSoAH0H-P7X15Ha-eu1brQ",
-    authDomain: "expense-trac-60ff5.firebaseapp.com",
-    projectId: "expense-trac-60ff5",
-    storageBucket: "expense-trac-60ff5.appspot.com",
-    messagingSenderId: "566385427667",
-    appId: "1:566385427667:web:fc386e1242cc208c52c026"
+    apiKey: "AIzaSyDYk-oQschDPDgJsLutPffTvamPj0dBvnk",
+  authDomain: "expense-tracking-5a9ab.firebaseapp.com",
+  projectId: "expense-tracking-5a9ab",
+  storageBucket: "expense-tracking-5a9ab.appspot.com",
+  messagingSenderId: "257547417292",
+  appId: "1:257547417292:web:a0d4568c6d9021c7ccb469"
 };
 
 // Initialize firebase functions and export globally.
